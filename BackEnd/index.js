@@ -1,5 +1,7 @@
-const express = require('express');
-const cors = require('cors');
+
+import express from "express"
+import cors from "cors"
+import mongoose from "mongodb"
 
 const app = express();
 app.use(cors());
@@ -12,3 +14,4 @@ app.get('/test', (request, response) => {
 app.listen(3000, () => {
     console.log("Listening on port 3000");
 });
+
