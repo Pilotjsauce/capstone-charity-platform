@@ -1,9 +1,10 @@
 
 import express from 'express';
-import cors from "cors"
+import cors from "cors";
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js' 
+import testRoute from './routes/testRoute.js' 
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use( "/api/users",userRoutes)
+app.use(testRoute)
   // Connect to MongoDB
   const connectDB = async () => {
     try {
