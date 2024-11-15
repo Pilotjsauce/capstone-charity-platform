@@ -1,15 +1,25 @@
-import express from "express"
-import cors from "cors"
-import mongoose from "mongodb"
+import { Router } from 'express';
+import User from '../models/userSchema.js';
+const router = Router()
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-app.get('/test', (request, response) => {
-    response.send("Testing");
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
 });
 
-app.listen(3000, () => {
-    console.log("Listening on port 3000");
+router.post('/', async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const newUser = new User({ name, email });
+    await newUser.save();
+    res.status(201).json(newUser);
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating user', error: err.message });
+  }
 });
+
+export default router;
