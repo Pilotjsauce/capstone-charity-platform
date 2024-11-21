@@ -1,16 +1,14 @@
-import "./App.css";
-import Footer from "./components/Footer";
-import Header from "./components/header";
-import Hero from "./components/Hero";
+import './App.css';
+import RouteComponent from './components/RouteComponent';
+
 
 function App() {
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <Hero />
-      <Footer />
-    </div>
-  );
+    <>
+      <RouteComponent></RouteComponent>
+    </>
+  )
 }
 
 export default App;
