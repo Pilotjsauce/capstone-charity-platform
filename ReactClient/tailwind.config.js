@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
+        brand: { //colors that i imported because they are not available as easily using tailwindCSS
           beige: "#D9CBB2",       // Beige background
           green: "#9CAF88",       // Green for header/footer/buttons
           offWhite: "#F5F2EC",    // Off-white/cream
