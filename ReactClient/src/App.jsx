@@ -5,7 +5,8 @@ import Header from "./components/Header";
 import Home from "./pages/Home"; 
 import Browse from "./pages/Browse"; 
 import Search from "./pages/Search"; 
-import OurMission from "./pages/OurMission";import RouteComponent from './components/RouteComponent';
+import OurMission from "./pages/OurMission";
+import RouteComponent from './components/RouteComponent';
 
 
 function App() {
