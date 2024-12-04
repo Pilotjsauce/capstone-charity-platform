@@ -4,9 +4,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js' 
 import testRoute from './routes/testRoute.js'
-//import userCharities from `./routes/userCharities.js` 
+import userCharities from `./routes/userCharities.js` 
 import { clerkMiddleware } from '@clerk/express'
-
 
 dotenv.config();
 
@@ -15,7 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use( "/api/users",userRoutes)
-//app.use("/api/charities", userCharities)
+app.use("/api/charities", userCharities)
 app.use(testRoute)
 app.use(clerkMiddleware())
   // Connect to MongoDB
@@ -34,7 +33,6 @@ app.use(clerkMiddleware())
   
   // Middleware to parse JSON
   app.use(express.json());
-  
   
   // Start the server
   const PORT = process.env.PORT || 5000;
