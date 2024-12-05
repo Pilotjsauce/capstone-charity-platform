@@ -6,7 +6,6 @@ const RouteComponent = (() => {
     const [route1, setRoute] = useState([]);
     const [error, setError] = useState();
 
-
     useEffect(() => {
         async function fetchRoute() {
             try{
