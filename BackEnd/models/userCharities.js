@@ -21,10 +21,10 @@ const charitySchema = new mongoose.Schema({
   summary: {
     type: String,
     required: true,
-  }
+  },
 });
 
-const Charity = mongoose.model('Charity', charitySchema);
+const Charity = mongoose.model(`Charity`, charitySchema);
 export default Charity;
 
 /**

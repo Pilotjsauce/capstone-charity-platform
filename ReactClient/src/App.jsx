@@ -7,6 +7,11 @@ import Browse from "./pages/Browse";
 import Search from "./pages/Search"; 
 import OurMission from "./pages/OurMission";
 import RouteComponent from './components/RouteComponent';
+import AboutUs from "./pages/AboutUs";
+import FAQ from "./pages/FAQ";
+import HowItWorks from "./pages/HowItWorks";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 
 function App() {
@@ -23,6 +28,12 @@ function App() {
             <Route path="/browse" element={<Browse />} />
             <Route path="/search" element={<Search />} />
             <Route path="/our-mission" element={<OurMission />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="how-it-works" element={<HowItWorks />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            
           </Routes>
         </main>
 
@@ -33,5 +44,4 @@ function App() {
 }
 
 export default App;
-
 
