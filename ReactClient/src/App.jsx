@@ -13,7 +13,7 @@ import HowItWorks from "./pages/HowItWorks";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 
-
+/* We already have this functionality but I will leave it here for people to decide which they prefer.
 const AppLayout = () => (
   <div className="min-h-screen flex flex-col">
     <Header />
@@ -24,7 +24,6 @@ const AppLayout = () => (
   </div>
 );
 
-/* We already have this functionality but I will leave it here for people to decide which they prefer.
 const router = createBrowserRouter([
   {
     path: "/",
