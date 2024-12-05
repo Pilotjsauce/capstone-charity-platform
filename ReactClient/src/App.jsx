@@ -24,7 +24,7 @@ const AppLayout = () => (
   </div>
 );
 
-
+/* We already have this functionality but I will leave it here for people to decide which they prefer.
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
+*/
 function App() {
   return (
     <Router>
