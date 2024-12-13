@@ -1,7 +1,10 @@
 import { useState } from "react"; //this isn't used yet but will be needed once post can actually be made
+import { Link } from "react-router-dom";
+import RouteComponent from "../components/RouteComponent";
 
 function Browse() {
   // fake charity post to show what it should look like
+
   const charityPosts = [ //this creates 2 diff objects to represent post, it has an ID, photo etc stuff that each post should include. the ID is used as the key for the map() function 
     {
       _id: "1", //unique ID for each of the post
@@ -62,6 +65,7 @@ function Browse() {
       </div>
     </div>
   );
+  //
 }
 
 export default Browse;

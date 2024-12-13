@@ -2,7 +2,8 @@ import { Router } from 'express';
 import Charity from '../models/userCharities.js';
 const router = Router()
 
-router.get('/', async (req, res) => {
+// the '/' does not have any text because it is defined in the index.js as /api/charities
+router.get('/Charities', async (req, res) => {
   try {
     const charities = await Charity.find();
     res.status(200).json(charities);
@@ -11,10 +12,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+//in postman the _ for id is added automatically so you dont have to add it to the schema or the rest of the program
+router.post('/Charities', async (req, res) => {
   try {
-    const { id_, photo, title, category, summary } = req.body;
-    const newCharity = new Charity({ id_, photo, title, category, summary });
+    const { photo, title, category, summary } = req.body;
+    const newCharity = new Charity({ photo, title, category, summary });
     await newCharity.save();
     res.status(201).json(newCharity);
   } catch (err) {

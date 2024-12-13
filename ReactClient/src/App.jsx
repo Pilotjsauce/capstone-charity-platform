@@ -1,4 +1,5 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+//import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -12,6 +13,7 @@ import FAQ from "./pages/FAQ";
 import HowItWorks from "./pages/HowItWorks";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+//import RouteComponent from "./components/RouteComponent";
 
 /* We already have this functionality but I will leave it here for people to decide which they prefer.
 const AppLayout = () => (
@@ -40,8 +42,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <Router>
-      <RouteComponent></RouteComponent><div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Header />
+      <RouteComponent></RouteComponent>
         
         {/* using Router because the previous setup i had only allowed for one page to be rendered ever */}
         <main className="flex-grow">

@@ -2,7 +2,8 @@ import { Router } from 'express';
 import User from '../models/userSchema.js';
 const router = Router()
 
-router.get('/', async (req, res) => {
+// the '/' does not have any text because it is defined in the index.js as /api/users
+router.get('/users', async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
@@ -11,7 +12,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/users', async (req, res) => {
   try {
     const { name, email } = req.body;
     const newUser = new User({ name, email });
