@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 
 const charitySchema = new mongoose.Schema({
-  id_: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
   photo: {
     type: String,
     required: false,
@@ -21,7 +16,7 @@ const charitySchema = new mongoose.Schema({
   summary: {
     type: String,
     required: true,
-  },
+  }
 });
 
 const Charity = mongoose.model(`Charity`, charitySchema);
