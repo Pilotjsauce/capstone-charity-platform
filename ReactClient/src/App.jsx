@@ -16,6 +16,7 @@ import TermsOfService from "./pages/TermsOfService";
 //import RouteComponent from "./components/RouteComponent";
 
 /* We already have this functionality but I will leave it here for people to decide which they prefer.
+/* We already have this functionality but I will leave it here for people to decide which they prefer.
 const AppLayout = () => (
   <div className="min-h-screen flex flex-col">
     <Header />
