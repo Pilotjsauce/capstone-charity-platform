@@ -13,13 +13,14 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { name, email } = req.body;
-    const newUser = new User({ name, email });
+    const { firstName, lastName, email, password } = req.body;
+    const newUser = new User({ firstName, lastName, email, password });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (err) {
     res.status(500).json({ message: 'Error creating user', error: err.message });
   }
 });
+
 
 export default router;
