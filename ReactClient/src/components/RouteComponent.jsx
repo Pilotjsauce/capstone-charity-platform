@@ -3,14 +3,10 @@ import { useState } from "react";
 
 function RouteComponent() {
 
-    //const [route1, setRoute] = useState([]);
-    // photo, title, category, summary
-    //const [data, setData] = useState({ photo: '', title: '', category: '', summary: ''});
     const [photo, setPhoto] = useState('');
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [summary, setSummary] = useState('');
-    //const [error, setError] = useState();
     
         const fetchRoute = async (e) => {
             e.preventDefault();
@@ -34,16 +30,12 @@ function RouteComponent() {
                 console.error('Error sending data:', error);
             }
         };
-        //fetchRoute();
-
        
-// photo, title, category, summary
 //check to see if type for photo is text or something else, and if the other type="" are correct
     return (
         <>
         <form onSubmit={fetchRoute}>
-            <input type="text" value={photo} 
-            onChange={(e) => setPhoto(e.target.value)} placeholder="image" />
+            <input type="text" value={photo} onChange={(e) => setPhoto(e.target.value)} placeholder="image" />
             <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title" />
             <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="category" />
             <input type="text" value={summary} onChange={(e) => setSummary(e.target.value)} placeholder="summary" />
