@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import Charity from '../models/userCharities.js';
+import Charity from '../models/charitySchema.js';
 const router = Router()
 
 // the '/' does not have any text because it is defined in the index.js as /api/charities

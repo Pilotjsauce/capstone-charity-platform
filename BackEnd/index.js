@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import charityRoutes from "./routes/charityRoutes.js";
+import cookieParser from "cookie-parser";
 import cors from "cors";
-
-import testRoute from './routes/testRoute.js' 
 
 dotenv.config();
 
@@ -24,9 +24,7 @@ app.use(express.urlencoded({extended: false}))
 
 app.use(userRoutes);
 app.use(authRoutes);
-app.use(userCharities);
-
-
+app.use(charityRoutes);
 
 // Connect to MongoDB
 const connectDB = async () => {

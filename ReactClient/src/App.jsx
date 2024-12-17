@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home"; 
 import Browse from "./pages/Browse"; 
 import Search from "./pages/Search"; 
-import OurMission from "./pages/OurMission";import RouteComponent from './components/RouteComponent';
+import OurMission from "./pages/OurMission";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import axios from "axios";
@@ -45,6 +45,11 @@ const router = createBrowserRouter([
       { path: "/our-mission", element: <OurMission /> },
       { path: "/Register", element: <Register /> },
       { path: "/Login", element: <Login /> },
+      { path: "/about", element: <AboutUs />},
+      { path: "/faq", element: <FAQ />},
+      { path: "/how-it-works", element: <HowItWorks />},
+      { path: "/privacy-policy", element: <PrivacyPolicy />},
+      { path: "/terms-of-service", element: <TermsOfService />},
     ],
   },
 ]);
