@@ -1,4 +1,5 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+//import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, Link } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -11,6 +12,12 @@ import Login from "./pages/Login";
 import axios from "axios";
 import { Toaster } from "react-hot-toast" //for showing cool notifications
 import { UserContextProvider } from "../context/userContext";
+import RouteComponent from './components/RouteComponent';
+import AboutUs from "./pages/AboutUs";
+import FAQ from "./pages/FAQ";
+import HowItWorks from "./pages/HowItWorks";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 
 axios.defaults.baseURL = "http://localhost:3000"
@@ -53,9 +60,3 @@ function App() {
 
 
 export default App;
-
-
-
-
-
-

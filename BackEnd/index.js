@@ -1,14 +1,11 @@
 import express from "express";
-
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 
-
-
+import testRoute from './routes/testRoute.js' 
 
 dotenv.config();
 
@@ -25,8 +22,9 @@ app.use(
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}))
 
-app.use("/api/users", userRoutes);
-app.use("/", authRoutes);
+app.use(userRoutes);
+app.use(authRoutes);
+app.use(userCharities);
 
 
 

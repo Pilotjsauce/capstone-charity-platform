@@ -1,31 +1,66 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const RouteComponent = (() => {
+function RouteComponent() {
 
-    const [route1, setRoute] = useState([]);
-    const [error, setError] = useState();
+    //const [route1, setRoute] = useState([]);
+    // photo, title, category, summary
+    //const [data, setData] = useState({ photo: '', title: '', category: '', summary: ''});
+    const [photo, setPhoto] = useState('');
+    const [title, setTitle] = useState('');
+    const [category, setCategory] = useState('');
+    const [summary, setSummary] = useState('');
+    //const [error, setError] = useState();
+    
+        const fetchRoute = async (e) => {
+            e.preventDefault();
 
-
-    useEffect(() => {
-        async function fetchRoute() {
-            try{
-                const response = await fetch(`http://localhost:${import.meta.env.VITE_SERVER_PORT}/test`);
+            try {
+                const response = await fetch(`http://localhost:${import.meta.env.VITE_SERVER_PORT}/Charities`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ photo, title, category, summary })
+                });
                 
-                const data = await response.json();
-                console.log(data);
-                setRoute(data);
+                if (response.ok) {
+                    console.log('Data sent successfully:')
+                } else {
+                    console.error('Error sending data:', response.status)
+                }
+
             } catch (error) {
-                setError(error);
+                console.error('Error sending data:', error);
             }
-        }
-        fetchRoute();
-    }, []);
+        };
+        //fetchRoute();
+
+       
+// photo, title, category, summary
+//check to see if type for photo is text or something else, and if the other type="" are correct
     return (
         <>
-            <div></div>
+        <form onSubmit={fetchRoute}>
+            <input type="text" value={photo} 
+            onChange={(e) => setPhoto(e.target.value)} placeholder="image" />
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title" />
+            <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="category" />
+            <input type="text" value={summary} onChange={(e) => setSummary(e.target.value)} placeholder="summary" />
+            <button type="submit">Submit</button>
+        </form>
         </>
     )
-});
+};
 
 export default RouteComponent
+
+/*
+_id: "1", //unique ID for each of the post
+      photo:
+        "https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg?cs=srgb&dl=pexels-rdne-6646918.jpg&fm=jpg",
+      title: "Lunchroom Volunteer",
+      category: "Food",
+      summary:
+        "Help out the lunch team at local schools",
+*/
