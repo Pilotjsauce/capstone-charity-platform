@@ -1,12 +1,27 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";// Import necessary components and modules from React Router and the project
-import "./App.css"; // Import the main CSS file for styling
-import Footer from "./components/Footer"; // Footer component
-import Header from "./components/Header"; // Header component
-import Home from "./pages/Home"; // Home page component
-import Browse from "./pages/Browse"; // Browse page component
-import Search from "./pages/Search"; // Search page component
-import OurMission from "./pages/OurMission"; // Our Mission page component
-import RouteComponent from "./components/RouteComponent"; // Custom route component (presumably for additional logic)
+//import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, Link } from "react-router-dom";
+import "./App.css";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Home from "./pages/Home"; 
+import Browse from "./pages/Browse"; 
+import Search from "./pages/Search"; 
+import OurMission from "./pages/OurMission";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import axios from "axios";
+import { Toaster } from "react-hot-toast" //for showing cool notifications
+import { UserContextProvider } from "../context/userContext";
+import RouteComponent from './components/RouteComponent';
+import AboutUs from "./pages/AboutUs";
+import FAQ from "./pages/FAQ";
+import HowItWorks from "./pages/HowItWorks";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+
+
+axios.defaults.baseURL = "http://localhost:3000"
+axios.defaults.withCredentials = true;
 
 const AppLayout = () => ( // Defines the main layout of the application
   <div className="min-h-screen flex flex-col"> 
