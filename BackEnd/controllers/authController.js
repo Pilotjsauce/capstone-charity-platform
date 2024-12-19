@@ -11,37 +11,43 @@ const test = (req, res) => {
 //register endpoint
 const registerUser = async (req, res) => {
     try {
-        const {firstName, lastName, email, password} = req.body;
-        //Check for full name
-        if(!firstName || !lastName) {
-            return res.json({
-                error: "Please enter your full name"
-            })
-        };
-        //check if password is good
-        if(!password || password.length < 6) {
-            return res.json({
-                error: "Password is required and should be at least 6 characters long"
-            })
-        };
-        //check email (if used already)
-        const exist = await User.findOne({email});
-        if(exist) {
-            return res.json({
-                error: "Email has already been used"
-            })
+        const { firstName, lastName, email, password, accountType } = req.body;
+
+        if (!['user', 'charity'].includes(accountType)) {
+            return res.status(400).json({ error: 'Invalid account type' });
         }
 
-        const hashedPassword = await authUtilStuff.hashPassword(password)
+        if (!firstName || !lastName) {
+            return res.json({ error: "Please enter your full name" });
+        }
+
+        if (!password || password.length < 6) {
+            return res.json({
+                error: "Password is required and should be at least 6 characters long"
+            });
+        }
+
+        const exist = await User.findOne({ email });
+        if (exist) {
+            return res.json({ error: "Email has already been used" });
+        }
+
+        const hashedPassword = await authUtilStuff.hashPassword(password);
         const user = await User.create({
-            firstName,lastName,email,password: hashedPassword,
-        })
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword,
+            accountType,
+        });
 
         return res.json(user);
     } catch (error) {
-        console.log(error)
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
+
 
 //login EndPointt
 const loginUser = async (req,res) => {

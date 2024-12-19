@@ -5,7 +5,7 @@ import logo from './pictures/logo.png';
 
 const Hero = () => {
   return (
-    <div className="relative pt-12 bg-brand-beige h-full flex-grow border-t-2 border-t-brand-grayGreen text-center font-serif flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat relative bg-[url(https://images.unsplash.com/photo-1593113616828-6f22bca04804?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)] bg-cover bg-center bg-no-repeat">
+    <div className="relative pt-12 bg-brand-beige h-screen flex-grow border-t-2 border-t-brand-grayGreen text-center font-serif flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat relative bg-[url(https://images.unsplash.com/photo-1593113616828-6f22bca04804?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)] bg-cover bg-center bg-no-repeat">
       
       <div className="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
 
