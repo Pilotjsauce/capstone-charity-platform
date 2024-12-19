@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast"; 
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
@@ -10,17 +10,23 @@ export default function Register() {
     lastName: "",
     email: "",
     password: "",
+    accountType: "user", // Default to "user"
   });
 
+  const toggleAccountType = (type) => {
+    setData({ ...data, accountType: type });
+  };
+
   const registerUser = async (event) => {
-    event.preventDefault(); // Stops the page from refreshing
-    const { firstName, lastName, email, password } = data;
+    event.preventDefault();
+    const { firstName, lastName, email, password, accountType } = data;
     try {
       const { data } = await axios.post("/Register", {
         firstName,
         lastName,
         email,
         password,
+        accountType,
       });
       if (data.error) {
         toast.error(data.error);
@@ -30,6 +36,7 @@ export default function Register() {
           lastName: "",
           email: "",
           password: "",
+          accountType: "user",
         });
         toast.success("Registration Successful. Welcome!");
         navigate("/login");
@@ -41,8 +48,37 @@ export default function Register() {
 
   return (
     <div className="flex w-screen justify-center h-screen items-center relative bg-[url(https://images.pexels.com/photos/6994982/pexels-photo-6994982.jpeg?cs=srgb&dl=pexels-julia-m-cameron-6994982.jpg&fm=jpg)] bg-cover bg-center bg-no-repeat">
-      <div className="flex bg-white flex-col w-1/3 h-3/5 rounded-lg justify-center items-center rounded-xl border-black border-2 bg-gradient-to-br from-teal-300 to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+      <div className="flex flex-col w-1/3 h-4/5 rounded-lg justify-center items-center rounded-xl border-gray border-2 bg-gradient-to-br from-teal-300 to-lime-300 dark:text-white  focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+        <div className="text-black text-xl font-semibold font-sans mb-4">
+          Will you be posting as a charity or interacting as a User?
+        </div>
         <form className="space-y-6" onSubmit={registerUser}>
+          <div className="flex justify-center space-x-4 my-4">
+            <button
+              type="button"
+              className={`w-24 h-10 px-4 py-2 text-sm font-medium rounded-lg ${
+                data.accountType === "user"
+                  ? "bg-teal-400 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+              onClick={() => toggleAccountType("user")}
+            >
+              User
+            </button>
+            <button
+              type="button"
+              className={`w-24 h-10 px-4 py-2 text-sm font-medium rounded-lg ${
+                data.accountType === "charity"
+                  ? "bg-teal-400 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+              onClick={() => toggleAccountType("charity")}
+            >
+              Charity
+            </button>
+          </div>
+
+          {/* First Name */}
           <label className="block text-sm/6 font-medium text-gray-900">
             First Name
           </label>
@@ -56,6 +92,7 @@ export default function Register() {
             }
           />
 
+          {/* Last Name */}
           <label className="block text-sm/6 font-medium text-gray-900">
             Last Name
           </label>
@@ -69,6 +106,7 @@ export default function Register() {
             }
           />
 
+          {/* Email */}
           <label className="block text-sm/6 font-medium text-gray-900">
             Email
           </label>
@@ -82,6 +120,7 @@ export default function Register() {
             }
           />
 
+          {/* Password */}
           <label className="block text-sm/6 font-medium text-gray-900">
             Password
           </label>

@@ -18,11 +18,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  //accountType: { // this needs to be implemented to allow the user to choose while creating their account if they will be making a user or charity account
-    //type: String,
-    //enum: ['user', 'charity'], //remember that enum makes it so that they can only be one or the other nothing else
-    //required: true, 
-  //},
+  accountType: { 
+    type: String,
+    enum: ['user', 'charity'], //remember that enum makes it so that they can only be one or the other nothing else
+    required: true, 
+  },
 });
 
 
