@@ -8,7 +8,7 @@ const test = (req, res) => {
 };
 
 
-//register ednpoint
+//register endpoint
 const registerUser = async (req, res) => {
     try {
         const {firstName, lastName, email, password} = req.body;

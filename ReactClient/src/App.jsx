@@ -19,6 +19,16 @@ import HowItWorks from "./pages/HowItWorks";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 
+try {
+                const response = fetch(`http://localhost:${import.meta.env.VITE_SERVER_PORT}/profile`);
+                const charityProfiles = await response.json();
+                }
+
+                //ask teachers how to get the value in key value pairs
+if(charityProfiles.){
+  import Profile from "./pages/profile"
+}
+
 
 axios.defaults.baseURL = "http://localhost:3000"
 axios.defaults.withCredentials = true;
@@ -33,8 +43,29 @@ const AppLayout = () => (
     <Footer />
   </div>
 );
-
-const router = createBrowserRouter([
+if(){
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <AppLayout />,
+      children: [
+        { path: "/", element: <Home /> },
+        { path: "/browse", element: <Browse /> },
+        { path: "/search", element: <Search /> },
+        { path: "/our-mission", element: <OurMission /> },
+        { path: "/Register", element: <Register /> },
+        { path: "/Login", element: <Login /> },
+        { path: "/about", element: <AboutUs />},
+        { path: "/faq", element: <FAQ />},
+        { path: "/how-it-works", element: <HowItWorks />},
+        { path: "/privacy-policy", element: <PrivacyPolicy />},
+        { path: "/terms-of-service", element: <TermsOfService />},
+        { path: "/profile", element: <Profile />},
+      ],
+    },
+  ]);
+} else {
+  const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
@@ -53,6 +84,8 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+}
+
 function App() {
   return (
     <UserContextProvider>
