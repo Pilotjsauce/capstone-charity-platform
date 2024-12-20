@@ -1,14 +1,14 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/userContext";
 
-export default function Login() {
+const Login = () => {
+  const { setUser, refreshUser } = useContext(UserContext);
   const navigate = useNavigate();
-  const [data, setData] = useState({
-    email: "",
-    password: "", //just to clarify for future too, these are set to empty strings because data is what the page is when the user goes to it not when they last used it. in short when the page is first reached these fields WILL be blank
-  });
+  const [data, setData] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
 
   const loginUser = async (event) => {
     event.preventDefault();
@@ -18,28 +18,34 @@ export default function Login() {
       return toast.error("The Email and Password are both Required");
     }
 
+    setLoading(true);
+
     try {
-      const { data } = await axios.post(
+      const response = await axios.post(
         "/Login",
         { email, password },
         { withCredentials: true }
       );
-      if (data.error) {
-        toast.error(data.error);
+      if (response.data.error) {
+        toast.error(response.data.error);
       } else {
-        setData({ email: "", password: "" }); //clears the form
+        setData({ email: "", password: "" }); // Clears the form
+        localStorage.setItem("authToken", response.data.token); // Store the auth token
+        await refreshUser(); // Refresh user data
+        toast.success("Login successful!");
         navigate("/");
       }
     } catch (error) {
       console.error("Login error:", error);
       toast.error("An error occurred while logging in");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex w-screen justify-center h-screen items-center relative bg-[url(https://images.pexels.com/photos/6590920/pexels-photo-6590920.jpeg?cs=srgb&dl=pexels-cottonbro-6590920.jpg&fm=jpg)] bg-cover bg-center bg-no-repeat">
-      <div className="flex bg-white flex-col w-1/5 h-3/5 rounded-lg justify-center items-center rounded-xl border-black border-2 bg-gradient-to-br from-teal-300 to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
-      
+      <div className="flex bg-white flex-col w-1/5 h-3/5 rounded-lg justify-center items-center rounded-xl border-gray border-2 bg-gradient-to-br from-teal-300 to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
         <form className="space-y-6" onSubmit={loginUser}>
           <label className="block text-sm/6 font-medium text-gray-900">
             Email
@@ -66,17 +72,18 @@ export default function Login() {
               setData({ ...data, password: event.target.value })
             }
           />
+
           <button
             type="submit"
-            className="my-2 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800 border-2 border-transparent hover:border-black"
+            className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700"
+            disabled={loading}
           >
-            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-              Login
-            </span>
+            {loading ? "Logging in..." : "Login"}
           </button>
-          <div>new here? Register</div>
         </form>
       </div>
     </div>
   );
-}
+};
+
+export default Login;

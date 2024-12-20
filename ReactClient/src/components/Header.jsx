@@ -1,21 +1,48 @@
-import { NavLink } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../../context/userContext";
 import logo from "./pictures/logo.png";
-import { Link } from "react-router-dom";
-
-//I originally used <Link> until I read online and was able to reference some pre written code showing how you can use NavLink instead to show which page you are on. I thought this fit a little better because i'd like to be a bit more clear which page the user is currently on. Right now whichever route included in the header you access will be underlined. subtle but should be enough for now
-
-//some code sourced from : https://www.hyperui.dev/components/marketing/headers
 
 const Header = () => {
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post('/logout'); // Call server-side logout endpoint
+      setUser(null);
+      // Clear JWT from local storage
+      localStorage.removeItem("authToken");
+      // Optionally, clear other tokens or cookies if used
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get("/profile");
+        setUser(response.data);
+      } catch (error) {
+        setUser(null);
+      }
+    };
+
+    fetchUser();
+  }, [setUser]);
+
   return (
-    <div className="text-gray-700 font-serif font-bold">
+    <div className="text-gray-700 font-mono ... font-bold">
       <div className="p-5 bg-gradient-to-br from-teal-300 to-lime-300 p-4"></div>
       <header className="bg-offWhite border-b">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <Link to="/" className="flex items-center gap-4">
               <img src={logo} alt="Logo" className="h-14 w-14" />
-              <div className="text-3xl font-bold text-teal-600">
+              <div className=" font-sans ... text-3xl font-bold text-teal-600">
                 Hands Together
               </div>
             </Link>
@@ -48,16 +75,32 @@ const Header = () => {
             </nav>
 
             <div className="flex items-center gap-4">
-              <Link to="/Register">
-                <button className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 hover:bg-gray-200">
-                  Register
-                </button>
-              </Link>
-              <Link to="/Login">
-                <button className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700">
-                  Log In
-                </button>
-              </Link>
+              {user ? (
+                <>
+                  <span className="font-sans ...">
+                    Welcome, {user.firstName}
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/register">
+                    <button className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 hover:bg-gray-200">
+                      Register
+                    </button>
+                  </Link>
+                  <Link to="/login">
+                    <button className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700">
+                      Log In
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
 
             <div className="block md:hidden">
