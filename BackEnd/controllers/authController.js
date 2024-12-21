@@ -7,11 +7,10 @@ const test = (req, res) => {
   res.json("test is working");
 };
 
-
 //register endpoint
 const registerUser = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, accountType } = req.body;
+        const { firstName, lastName, email, password, accountType, isAdmin } = req.body;
 
         if (!['user', 'charity'].includes(accountType)) {
             return res.status(400).json({ error: 'Invalid account type' });
@@ -39,6 +38,7 @@ const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             accountType,
+            isAdmin,
         });
 
         return res.json(user);
@@ -49,7 +49,7 @@ const registerUser = async (req, res) => {
 };
 
 
-//login EndPointt
+//login EndPoint
 const loginUser = async (req,res) => {
     try {
         const {email, password} = req.body;
@@ -87,5 +87,7 @@ const getProfile = (req,res) => {
         res.json(null)
     }
 }
+
+
 
 export default { test, registerUser, loginUser, getProfile };

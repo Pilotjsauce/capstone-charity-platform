@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'charity'], //remember that enum makes it so that they can only be one or the other nothing else
     required: true, 
   },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 

@@ -18,17 +18,17 @@ import FAQ from "./pages/FAQ";
 import HowItWorks from "./pages/HowItWorks";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
-
+/*
 try {
-                const response = fetch(`http://localhost:${import.meta.env.VITE_SERVER_PORT}/profile`);
-                const charityProfiles = await response.json();
-                }
+  const response = fetch(`http://localhost:${import.meta.env.VITE_SERVER_PORT}/profile`);
+  const charityProfiles = await response.json();
+}
 
                 //ask teachers how to get the value in key value pairs
 if(charityProfiles.){
   import Profile from "./pages/profile"
 }
-
+*/
 
 axios.defaults.baseURL = "http://localhost:3000"
 axios.defaults.withCredentials = true;
@@ -43,7 +43,9 @@ const AppLayout = () => (
     <Footer />
   </div>
 );
+/*
 if(){
+*/
   const router = createBrowserRouter([
     {
       path: "/",
@@ -60,10 +62,10 @@ if(){
         { path: "/how-it-works", element: <HowItWorks />},
         { path: "/privacy-policy", element: <PrivacyPolicy />},
         { path: "/terms-of-service", element: <TermsOfService />},
-        { path: "/profile", element: <Profile />},
       ],
     },
   ]);
+/*
 } else {
   const router = createBrowserRouter([
   {
@@ -81,10 +83,12 @@ if(){
       { path: "/how-it-works", element: <HowItWorks />},
       { path: "/privacy-policy", element: <PrivacyPolicy />},
       { path: "/terms-of-service", element: <TermsOfService />},
+       { path: "/profile", element: <Profile />},
     ],
   },
 ]);
 }
+*/
 
 function App() {
   return (

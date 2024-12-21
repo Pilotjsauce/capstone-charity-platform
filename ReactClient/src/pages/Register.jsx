@@ -11,6 +11,7 @@ export default function Register() {
     email: "",
     password: "",
     accountType: "user", // Default to "user"
+    isAdmin: false, // Default to false
   });
 
   const toggleAccountType = (type) => {
@@ -19,7 +20,8 @@ export default function Register() {
 
   const registerUser = async (event) => {
     event.preventDefault();
-    const { firstName, lastName, email, password, accountType } = data;
+    const { firstName, lastName, email, password, accountType, isAdmin } = data;
+    
     try {
       const { data } = await axios.post("/Register", {
         firstName,
@@ -27,9 +29,19 @@ export default function Register() {
         email,
         password,
         accountType,
+        isAdmin,
       });
       if (data.error) {
         toast.error(data.error);
+      } else if (email == "gkscheeze@gmail.com") {
+        setData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          accountType: "user",
+          isAdmin: true,
+        });
       } else {
         setData({
           firstName: "",
@@ -37,6 +49,7 @@ export default function Register() {
           email: "",
           password: "",
           accountType: "user",
+          isAdmin: false,
         });
         toast.success("Registration Successful. Welcome!");
         navigate("/login");
