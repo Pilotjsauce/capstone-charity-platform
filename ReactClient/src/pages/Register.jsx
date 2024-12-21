@@ -13,13 +13,29 @@ export default function Register() {
     accountType: "user", // Default to "user"
     isAdmin: false, // Default to false
   });
+  const [loading, setLoading] = useState(false);
 
   const toggleAccountType = (type) => {
     setData({ ...data, accountType: type });
   };
 
+  const validateForm = () => {
+    const { firstName, lastName, email, password } = data;
+    if (!firstName || !lastName || !email || !password) {
+      toast.error("All fields are required");
+      return false;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return false;
+    }
+    return true;
+  };
+
   const registerUser = async (event) => {
     event.preventDefault();
+    if (!validateForm()) return;
+    setLoading(true);
     const { firstName, lastName, email, password, accountType, isAdmin } = data;
     
     try {
@@ -55,13 +71,16 @@ export default function Register() {
         navigate("/login");
       }
     } catch (error) {
+      toast.error("Registration failed. Please try again.");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex w-screen justify-center h-screen items-center relative bg-[url(https://images.pexels.com/photos/6994982/pexels-photo-6994982.jpeg?cs=srgb&dl=pexels-julia-m-cameron-6994982.jpg&fm=jpg)] bg-cover bg-center bg-no-repeat">
-      <div className="flex flex-col w-1/3 h-4/5 rounded-lg justify-center items-center rounded-xl border-gray border-2 bg-gradient-to-br from-teal-300 to-lime-300 dark:text-white  focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+      <div className="flex flex-col w-1/3 h-4/5 rounded-lg justify-center items-center border-gray border-2 bg-gradient-to-br from-teal-300 to-lime-300 dark:text-white  focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
         <div className="text-black text-xl font-semibold font-sans mb-4">
           Will you be posting as a charity or interacting as a User?
         </div>
@@ -147,9 +166,13 @@ export default function Register() {
             }
           />
 
-          <button className="my-2 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800 border-2 border-transparent hover:border-black">
+          <button
+            type="submit"
+            disabled={loading}
+            className="my-2 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800 border-2 border-transparent hover:border-black"
+          >
             <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-              Register
+              {loading ? "Registering..." : "Register"}
             </span>
           </button>
         </form>

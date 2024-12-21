@@ -1,7 +1,16 @@
 import User from "../models/userSchema.js"
 import authUtilStuff from "../helpers/auth.js"
 import jwt from 'jsonwebtoken';
+import { invalidateToken } from "../helpers/authMiddleware.js";
 
+export const logoutUser = (req, res) => {
+  const token = req.cookies.token || req.headers['authorization'];
+  if (token) {
+    invalidateToken(token); // Invalidate the token
+  }
+  res.clearCookie("token"); // Clear the token cookie
+  res.status(200).send({ message: "Logged out successfully" });
+};
 
 const test = (req, res) => {
   res.json("test is working");
@@ -89,5 +98,4 @@ const getProfile = (req,res) => {
 }
 
 
-
-export default { test, registerUser, loginUser, getProfile };
+export default { test, registerUser, loginUser, getProfile, logoutUser };
