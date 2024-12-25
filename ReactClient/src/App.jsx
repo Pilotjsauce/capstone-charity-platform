@@ -8,6 +8,7 @@ import Search from "./pages/Search";
 import OurMission from "./pages/OurMission";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile"; 
 import axios from "axios";
 import { Toaster } from "react-hot-toast"; // for showing cool notifications
 import { UserContextProvider } from "../context/userContext";
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
       { path: "/how-it-works", element: <HowItWorks /> },
       { path: "/privacy-policy", element: <PrivacyPolicy /> },
       { path: "/terms-of-service", element: <TermsOfService /> },
+      { path: "/profile", element: <Profile /> },
     ],
   },
 ]);

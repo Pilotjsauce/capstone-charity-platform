@@ -10,7 +10,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('/logout'); // Call server-side logout endpoint
+      await axios.post("/logout"); // Call server-side logout endpoint
       setUser(null);
       // Clear JWT from local storage
       localStorage.removeItem("authToken");
@@ -35,14 +35,14 @@ const Header = () => {
   }, [setUser]);
 
   return (
-    <div className="text-gray-700 font-mono ... font-bold">
+    <div className="text-gray-700 font-serif font-bold">
       <div className="p-5 bg-gradient-to-br from-teal-300 to-lime-300 p-4"></div>
       <header className="bg-offWhite border-b">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <Link to="/" className="flex items-center gap-4">
               <img src={logo} alt="Logo" className="h-14 w-14" />
-              <div className=" font-sans ... text-3xl font-bold text-teal-600">
+              <div className="text-3xl font-bold text-teal-600">
                 Hands Together
               </div>
             </Link>
@@ -77,9 +77,12 @@ const Header = () => {
             <div className="flex items-center gap-4">
               {user ? (
                 <>
-                  <span className="font-sans ...">
-                    Welcome, {user.firstName}
-                  </span>
+                  <span>Welcome, {user.firstName}</span>
+                  <NavLink to="/profile" className="hover:text-teal-600">
+                  <button className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700">
+                    Profile
+                  </button>
+                  </NavLink>
                   <button
                     onClick={handleLogout}
                     className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700"
