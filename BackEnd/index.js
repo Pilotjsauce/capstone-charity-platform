@@ -6,12 +6,19 @@ import authRoutes from "./routes/authRoutes.js";
 import charityRoutes from "./routes/charityRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import uploadRoutes from './routes/uploadRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
 // Initialize Express
 const app = express();
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(
   cors({
@@ -25,6 +32,7 @@ app.use(express.urlencoded({extended: false}))
 app.use(userRoutes);
 app.use(authRoutes);
 app.use(charityRoutes);
+app.use(uploadRoutes);
 
 // Connect to MongoDB
 const connectDB = async () => {

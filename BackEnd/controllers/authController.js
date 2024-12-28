@@ -1,7 +1,17 @@
 import User from "../models/userSchema.js"
 import authUtilStuff from "../helpers/auth.js"
 import jwt from 'jsonwebtoken';
+import { invalidateToken } from "../helpers/authMiddleware.js";
 
+
+export const logoutUser = (req, res) => {
+  const token = req.cookies.token || req.headers['authorization'];
+  if (token) {
+    invalidateToken(token); // Invalidate the token
+  }
+  res.clearCookie("token"); // Clear the token cookie
+  res.status(200).send({ message: "Logged out successfully" });
+};
 
 const test = (req, res) => {
   res.json("test is working");
@@ -76,16 +86,57 @@ const loginUser = async (req,res) => {
     }
 }
 
-const getProfile = (req,res) => {
-    const {token} = req.cookies
-    if(token) {
-        jwt.verify(token, process.env.JWT_SECRET, {}, (err,user) => {
-            if(err) throw err;
-            res.json(user)
-        })
-    } else {
-        res.json(null)
+const getProfile = async (req, res) => {
+    const {token} = req.cookies;
+    
+    if(!token) {
+        return res.json(null);
     }
-}
 
-export default { test, registerUser, loginUser, getProfile };
+    try {
+        // Verify JWT token
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+        
+        // Get full user profile excluding password (this should fix the bug where it was not pulling their lastname or account type because of how I had it setup before TESTING still needed)
+        const user = await User.findById(decoded.id)
+            .select('-password') //makes it so that the password ISN'T returned for security reasons Edit: I think it would be hashed anyay but still good practice
+            .lean();
+
+        if (!user) {
+            return res.json(null);
+        }
+
+        res.json({
+            id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            accountType: user.accountType
+        });
+        
+    } catch (err) {
+        console.error('Profile error:', err);
+        res.json(null);
+    }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    console.log('Update request:', req.body); // Debug
+    const { profileImage } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { profileImage },
+      { new: true }
+    ).select('-password');
+    
+    console.log('Updated user:', user); // Debug
+    res.json(user);
+  } catch (error) {
+    console.error('Update error:', error);
+    res.status(500).json({ error: 'Update failed' });
+  }
+};
+
+
+export default { test, registerUser, loginUser, getProfile, logoutUser, updateProfile };
