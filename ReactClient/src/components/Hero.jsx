@@ -6,10 +6,8 @@ import logo from './pictures/logo.png';
 const Hero = () => {
   return (
     <div className="relative pt-12 bg-brand-beige h-screen flex-grow border-t-2 border-t-brand-grayGreen text-center font-serif flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat relative bg-[url(https://images.unsplash.com/photo-1593113616828-6f22bca04804?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)] bg-cover bg-center bg-no-repeat">
-      
       <div className="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
 
-     
       <div className="relative z-10 mt-0">
         <img
           src={logo}
@@ -51,20 +49,18 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="relative z-10 w-2/3 text-center flex flex-col items-center justify-center pb-16 ">
-        <p className="w-3/4 text-white text-lg leading-relaxed mb-6 px-4 sm:px-8">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam natoque
-          aliquet aptent aliquam montes. Nulla posuere sem faucibus fusce tempus
-          vel netus. Maecenas in in facilisi sit risus inceptos. Sem consectetur
-          nec pellentesque placerat vulputate tincidunt facilisis eget. Gravida
-          mauris amet cras, vehicula dui ridiculus. Magnis netus urna dictum,
-          scelerisque nulla purus aliquam.
-        </p>
-
-        <p className=" w-3/4 text-white text-lg leading-relaxed px-4 sm:px-8">
-          Sem consectetur nec pellentesque placerat vulputate tincidunt
-          facilisis eget. Gravida mauris amet cras, vehicula dui ridiculus.
-          Magnis netus urna dictum, scelerisque nulla purus aliquam.
+      <div className="relative z-10 w-2/3 text-center flex flex-col items-center justify-center pb-16">
+        <p className="w-3/4 text-white text-lg leading-relaxed px-4 sm:px-8 bg-black/50 rounded-md p-4">
+          HandsTogether is your friendly online space where connecting with
+          charities in your area has never been easier! Designed with simplicity
+          and joy in mind, our platform helps you discover amazing causes, stay
+          up-to-date with their efforts, and even interact with them—just like
+          your favorite social media. Whether you’re looking to volunteer,
+          donate, or simply cheer on a cause close to your heart, HandsTogether
+          is here to make it happen. With an intuitive design and vibrant
+          community, you’ll love every moment spent exploring and supporting
+          charities. Don’t wait—sign up today and start making a difference with
+          HandsTogether!
         </p>
       </div>
     </div>
