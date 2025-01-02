@@ -1,71 +1,71 @@
-import { useState } from "react"; //this isn't used yet but will be needed once post can actually be made
-import { Link } from "react-router-dom";
-import RouteComponent from "../components/RouteComponent";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-hot-toast"; // For error handling with toast
 
-function Browse() {
-  // fake charity post to show what it should look like
+const Browse = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const charityPosts = [ //this creates 2 diff objects to represent post, it has an ID, photo etc stuff that each post should include. the ID is used as the key for the map() function 
-    {
-      _id: "1", //unique ID for each of the post
-      photo:
-        "https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg?cs=srgb&dl=pexels-rdne-6646918.jpg&fm=jpg",
-      title: "Lunchroom Volunteer",
-      category: "Food",
-      summary:
-        "Help out the lunch team at local schools",
-    },
-    {
-      _id: "2", //another ID
-      photo:
-        "https://media.istockphoto.com/id/1353332258/photo/donation-concept-the-volunteer-giving-a-donate-box-to-the-recipient-standing-against-the-wall.jpg?s=612x612&w=0&k=20&c=9AL8Uj9TTtrbHpM78kMp9fqjT_8EqpEekjdixeKUzDw=",
-      title: "Volunteer to help sort donated goods",
-      category: "Donation",
-      summary: "Help manage donations given by local sponsors", //this text can overflow fix that later
-    },
-    {
-      _id: "3", //another ID
-      photo:
-        "https://media.istockphoto.com/id/1372606308/photo/volunteers-arranging-donations-in-a-community-charity-donation-center.jpg?s=612x612&w=0&k=20&c=A3d1e79jYoJMDJPXJf-9wzFknpP3x8lmWfuffZ8cB1Y=",
-      title: "Food Drive Volunteers",
-      category: "Food",
-      summary: "Help with the Virginia state food drive as a volunteer", //this text can overflow fix that later
-    },
-    
-  ];
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/browse`
+        ); // Send a GET request to the backend to grab posts
+        const updatedPosts = response.data.map((post) => ({
+          ...post,
+          image: post.image.startsWith("/uploads/")
+            ? `${import.meta.env.VITE_BACKEND_URL}${post.image}`
+            : post.image,
+        }));
+        setPosts(updatedPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        toast.error("Failed to load charity posts"); // Show an error with toast if something goes wrong
+      } finally {
+        setLoading(false); // when the req is done the loading is stopped
+      }
+    };
 
-  //in this below section the map() function loops over each item in the charityPosts array and for each one it goes over it returns a new div that represents the post
-
+    fetchPosts();
+  }, []);
 
   return (
-    <div className="flex flex-col min-h-screen p-20 bg-brand-beige">
-      
-
-      <div className="space-y-6">
-        {charityPosts.map((post) => (
-          <div
-            key={post._id}
-            className="flex bg-brand-offWhite rounded-lg shadow-lg p-8"
-          >
-            <div className="w-1/3">
-              <img
-                src={post.photo}
-                alt={post.title}
-                className="w-1/2 h-auto rounded-lg hover:scale-105 transition-transform"
-              />
-            </div>
-
-            <div className="w-2/3 pl-6">
-              <h2 className="text-2xl font-semibold">{post.title}</h2>
-              <p className="text-gray-600 mb-4">{post.category}</p>
-              <p className="text-sm">{post.summary}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-4">Browse Charity Posts</h2>
+      {loading ? (
+        <p>Loading posts...</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {posts.length === 0 ? (
+            <p>No charity posts available.</p>
+          ) : (
+            posts.map((post) => (
+              <div
+                key={post._id}
+                className="bg-white p-4 rounded-lg shadow-md transform hover:scale-110 hover:rotate-3 transition-transform duration-300 ease-in-out"
+              >
+                {post.image ? (
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-48 object-cover rounded-md mb-4"
+                  />
+                ) : (
+                  <div className="h-48 bg-gray-200 rounded-md mb-4" />
+                )}
+                <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
+                <p className="text-gray-700 mb-2">
+                  <strong>Category:</strong> {post.category}
+                </p>
+                <p className="text-gray-500">{post.summary}</p>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
-  //
-}
+};
 
 export default Browse;

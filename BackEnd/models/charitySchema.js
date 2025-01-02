@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 
 const charitySchema = new mongoose.Schema({
-  photo: {
-    type: String,
-    required: false,
+  image: {
+    type: String, // Store the relative image path 
+    required: false, // image is not required
+    default: '/uploads/default.png', // default image path
   },
   title: {
     type: String,
@@ -19,8 +20,10 @@ const charitySchema = new mongoose.Schema({
   }
 });
 
-const Charity = mongoose.model(`Charity`, charitySchema);
+const Charity = mongoose.model('Charity', charitySchema);
 export default Charity;
+
+
 
 /**
  _id: "1", //unique ID for each of the post

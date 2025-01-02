@@ -10,7 +10,7 @@ export default function Register() {
     lastName: "",
     email: "",
     password: "",
-    accountType: "user", // Default to "user"
+    accountType: "user", // Default to "user" //not was going to use this same logic for the makePost category but decided a dropdown is more effective and easier to manage in that situation
   });
   const [loading, setLoading] = useState(false);
 
@@ -31,13 +31,15 @@ export default function Register() {
     return true;
   };
 
+  //in the future add a check for symbols/numbers being included in the firstName and lastName
+
   const registerUser = async (event) => {
     event.preventDefault();
     if (!validateForm()) return;
     setLoading(true);
     const { firstName, lastName, email, password, accountType } = data;
     try {
-      const { data } = await axios.post("/Register", {
+      const { data } = await axios.post("/Register", { //data in this situation refers to the entire object that is returned from the axios call. so i can change the data by using something like "data.firstName" to get the first name of the user or even to modify it later on
         firstName,
         lastName,
         email,

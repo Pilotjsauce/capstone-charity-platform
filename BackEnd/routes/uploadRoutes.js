@@ -4,13 +4,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import User from '../models/userSchema.js';
 import { authenticateToken } from '../helpers/authMiddleware.js';
+import Charity from '../models/charitySchema.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
-// Configure multer storage
+// Configure multer storage for local storage (uploads folder)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, '../uploads/'))
@@ -22,7 +23,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit for images
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
@@ -32,7 +33,7 @@ const upload = multer({
   }
 });
 
-// File upload route
+// File upload route (local image storage)
 router.post('/upload-profile-image', authenticateToken, upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
@@ -60,6 +61,30 @@ router.post('/upload-profile-image', authenticateToken, upload.single('image'), 
   }
 });
 
+//CHARITY POST IMAGE UPLOAD
+router.post('/upload-post-image', authenticateToken, upload.single('image'), async (req, res) => {
+  try {
+    const { title, category, summary } = req.body;
+    const postImageUrl = req.file ? `/uploads/${req.file.filename}` : '/uploads/default.png'; // default if no image is uploaded
+
+    const post = await Charity.create({
+      image: postImageUrl,
+      title,
+      category,
+      summary,
+    });
+
+    console.log('Post created:', post);
+    res.status(201).json({ message: 'Post created successfully', post });
+  } catch (error) {
+    console.error('Error creating post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
+
 // Profile update route
 router.patch('/update-profile', authenticateToken, async (req, res) => {
   try {
@@ -70,7 +95,7 @@ router.patch('/update-profile', authenticateToken, async (req, res) => {
       req.user.id,
       { profileImage },
       { new: true }
-    ).select('-password');
+    ).select('-password'); // Exclude password for security reasons
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });

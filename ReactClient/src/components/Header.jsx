@@ -12,7 +12,7 @@ const Header = () => {
     try {
       await axios.post("/logout"); // Call server-side logout endpoint
       setUser(null);
-      // Clear JWT from local storage
+      // Clear JWT from local storage so that the user is logged out and that previous bug doesn't persist hopefully (the bug pretty much was so that the user token was never deleted so sometimes (EVERYTIME) the user would be logged in even after logging out)
       localStorage.removeItem("authToken");
       navigate("/");
     } catch (error) {
@@ -76,7 +76,11 @@ const Header = () => {
             <div className="flex items-center gap-4">
               {user ? (
                 <>
-                  <span>Welcome, {user.firstName}</span>
+                  <span>
+                    Welcome,{" "}
+                    {user.firstName.charAt(0).toUpperCase() +
+                      user.firstName.slice(1)}
+                  </span>
                   <NavLink to="/profile" className="hover:text-teal-600">
                     <button className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700">
                       Profile
