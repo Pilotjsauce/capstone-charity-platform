@@ -9,6 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    localStorage.clear();
     try {
       await axios.post("/logout"); // Call server-side logout endpoint
       setUser(null);

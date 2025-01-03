@@ -17,7 +17,8 @@ const charitySchema = new mongoose.Schema({
   summary: {
     type: String,
     required: true,
-  }
+  },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to the User who created the post
 });
 
 const Charity = mongoose.model('Charity', charitySchema);

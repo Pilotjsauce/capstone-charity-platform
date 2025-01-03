@@ -64,20 +64,30 @@ router.post('/upload-profile-image', authenticateToken, upload.single('image'), 
 //CHARITY POST IMAGE UPLOAD
 router.post('/upload-post-image', authenticateToken, upload.single('image'), async (req, res) => {
   try {
-    const { title, category, summary } = req.body;
-    const postImageUrl = req.file ? `/uploads/${req.file.filename}` : '/uploads/default.png'; // default if no image is uploaded
+    // Debug logs
+    console.log("Full request user object:", req.user);
+    console.log("User ID type:", typeof req.user._id);
+    console.log("Raw user ID value:", req.user._id);
 
-    const post = await Charity.create({
+    const { title, category, summary } = req.body;
+    const postImageUrl = req.file ? `/uploads/${req.file.filename}` : '/uploads/default.png';
+    
+    // Create object and log it
+    const postData = {
       image: postImageUrl,
       title,
       category,
       summary,
-    });
-
+      createdBy: req.user.id // This might need to be req.user.id depending on your JWT payload
+    };
+    
+    console.log("Post data being sent to create:", postData);
+    
+    const post = await Charity.create(postData);
     console.log('Post created:', post);
     res.status(201).json({ message: 'Post created successfully', post });
   } catch (error) {
-    console.error('Error creating post:', error);
+    console.error('Full error object:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

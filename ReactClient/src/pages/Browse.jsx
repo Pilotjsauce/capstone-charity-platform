@@ -30,6 +30,31 @@ const Browse = () => {
     fetchPosts();
   }, []);
 
+  const handleDelete = async (postId) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/${postId}`, // Removed 'charities' from the path
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        setPosts((prevPosts) =>
+          prevPosts.filter((post) => post._id !== postId)
+        );
+        toast.success("Post deleted successfully!");
+      }
+    } catch (error) {
+      console.error(
+        "Error deleting post:",
+        error.response?.data || error.message
+      );
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An error occurred while deleting the post";
+      toast.error(errorMessage);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Browse Charity Posts</h2>
@@ -59,6 +84,16 @@ const Browse = () => {
                   <strong>Category:</strong> {post.category}
                 </p>
                 <p className="text-gray-500">{post.summary}</p>
+
+                <button
+                  onClick={() => {
+                    console.log("Delete button clicked for post ID:", post._id);
+                    handleDelete(post._id); // Call handleDelete after logging the post ID
+                  }}
+                  className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Delete
+                </button>
               </div>
             ))
           )}

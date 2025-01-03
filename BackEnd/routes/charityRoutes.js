@@ -18,12 +18,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }); // Initialize multer with the storage config
 
-// POST route to create a charity post
+// CREATE route to create a charity post
 router.post("/create", authenticateToken, upload.single('image'), async (req, res) => {
   try {
     console.log("Request body:", req.body);
     console.log("Request file:", req.file);
-    
+    console.log("User from JWT:", req.user);  // Log to verify user info
+
     const { title, category, summary } = req.body;
     let imageUrl = '';
 
@@ -44,8 +45,8 @@ router.post("/create", authenticateToken, upload.single('image'), async (req, re
       title,
       category,
       summary,
-      photo: imageUrl || '', // Use the local image path or empty string if no image
-      createdBy: req.user._id // Add user reference for delete and update operations
+      photo: imageUrl || '', 
+      createdBy: req.user.id
     });
 
     // Save the new charity post to the database
@@ -61,6 +62,27 @@ router.post("/create", authenticateToken, upload.single('image'), async (req, re
       error: error.message,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
     });
+  }
+});
+
+// DELETE route to delete a charity post
+router.delete("/:id", async (req, res) => {
+  console.log("DELETE request received for ID:", req.params.id);
+  try {
+    const postId = req.params.id;
+    console.log("Attempting to delete post with ID:", postId); // Add this log
+    
+    const result = await Charity.findByIdAndDelete(postId);
+    console.log("Delete result:", result); // Add this log
+    
+    if (!result) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    res.status(500).json({ message: "Error deleting post", error: error.message });
   }
 });
 
