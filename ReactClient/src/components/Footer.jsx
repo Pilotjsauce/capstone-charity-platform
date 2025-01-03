@@ -1,78 +1,146 @@
-import { Link } from "react-router-dom"
+import React, { useContext, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../../context/userContext";
 import logo from "./pictures/logo.png";
 
-const Footer = () => {
-    return (
-    
+const Header = () => {
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-      //some of these design elements are sourced from :
+  const handleLogout = async () => {
+    try {
+      await axios.post("/logout"); // Call server-side logout endpoint
+      setUser(null);
+      // Clear JWT from local storage so that the user is logged out and that previous bug doesn't persist hopefully (the bug pretty much was so that the user token was never deleted so sometimes (EVERYTIME) the user would be logged in even after logging out)
+      localStorage.removeItem("authToken");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
-      <footer className="bg-brand-offWhite">
-        <div className="relative mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 lg:pt-8">
-          <div className="absolute end-4 top-4 sm:end-6 sm:top-6 lg:end-8 lg:top-8">
-            <a
-              className="inline-block rounded-full bg-teal-600 p-2 text-white shadow transition hover:bg-teal-500 sm:p-3 lg:p-4"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault(); // stops the default anchor behavior
-                window.scrollTo({ top: 0, behavior: "smooth" }); //scrols to the top of until the top margin is 0, also uses smooth scroll behavior
-              }}
-            >
-              <span className="sr-only">go to the top of whatever page</span>
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get("/profile");
+        setUser(response.data);
+      } catch (error) {
+        setUser(null);
+      }
+    };
 
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </a>
-          </div>
+    fetchUser();
+  }, [setUser]);
 
-          <div className="lg:flex lg:items-end lg:justify-between">
-            <div>
-              <img src={logo} alt="Logo" className="h-16" />
-              <div className="flex justify-center text-teal-600 lg:justify-start"></div>
-
-              <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
-                Help make a change in your community by learning more about
+  return (
+    <div className="text-gray-700 font-serif font-bold">
+      <div className="p-5 bg-gradient-to-br from-teal-300 to-lime-300 p-4"></div>
+      <header className="bg-offWhite border-b">
+        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <Link to="/" className="flex items-center gap-4">
+              <img src={logo} alt="Logo" className="h-14 w-14" />
+              <div className="text-3xl font-bold text-teal-600">
                 Hands Together
-              </p>
+              </div>
+            </Link>
+
+            <nav className="hidden md:flex gap-6 text-sm text-gray-500">
+              <NavLink
+                to="/browse"
+                className={({ isActive }) =>
+                  isActive ? "underline text-teal-600" : "hover:text-gray-500"
+                }
+              >
+                Browse Opportunities
+              </NavLink>
+              <NavLink
+                to="/our-mission"
+                className={({ isActive }) =>
+                  isActive ? "underline text-teal-600" : "hover:text-gray-500"
+                }
+              >
+                Our Mission
+              </NavLink>
+              <NavLink
+                to="/search"
+                className={({ isActive }) =>
+                  isActive ? "underline text-teal-600" : "hover:text-gray-500"
+                }
+              >
+                Search
+              </NavLink>
+            </nav>
+
+            <div className="flex items-center gap-4">
+              {user ? (
+                <>
+                  <span>
+                    Welcome,{" "}
+                    {user.firstName.charAt(0).toUpperCase() +
+                      user.firstName.slice(1)}
+                  </span>
+                  <NavLink to="/profile" className="hover:text-teal-600">
+                    <button className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700">
+                      Profile
+                    </button>
+                  </NavLink>
+                  {user.accountType === "charity" && (
+                    <NavLink to="/make-post" className="hover:text-teal-600">
+                      <button className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                          Make a Post
+                        </span>
+                      </button>
+                    </NavLink>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/register">
+                    <button className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 hover:bg-gray-200">
+                      Register
+                    </button>
+                  </Link>
+                  <Link to="/login">
+                    <button className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700">
+                      Log In
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
 
-            <nav className="grid grid-cols-2 gap-3 text-center lg:text-left">
-              <Link to="/" className="hover:underline">
-                Home
-              </Link>
-              <Link to="/about" className="hover:underline">
-                About Us
-              </Link>
-              <Link to="/how-it-works" className="hover:underline">
-                How it works
-              </Link>
-              <Link to="/faq" className="hover:underline">
-                FAQ
-              </Link>
-              <Link to="/terms-of-service" className="hover:underline">
-                Terms of Service
-              </Link>
-              <Link to="/privacy-policy" className="hover:underline">
-                Privacy Policy
-              </Link>
-            </nav>
+            <div className="block md:hidden">
+              <button className="rounded bg-gray-100 p-2 text-gray-600 hover:text-teal-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
-
-          <p className="mt-12 text-center text-sm text-gray-500 lg:text-right">
-            Copyright HandsTogether &copy; 2024. All rights reserved.
-          </p>
         </div>
-      </footer>
-    );
-  };
-  export default Footer;
+      </header>
+    </div>
+  );
+};
+
+export default Header;

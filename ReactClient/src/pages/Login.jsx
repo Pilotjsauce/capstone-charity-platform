@@ -10,38 +10,51 @@ const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
-  const loginUser = async (event) => {
-    event.preventDefault();
-    const { email, password } = data;
+ const loginUser = async (event) => {
+   event.preventDefault();
+   const { email, password } = data;
 
-    if (!email || !password) {
-      return toast.error("The Email and Password are both Required");
-    }
+   if (!email || !password) {
+     return toast.error("The Email and Password are both Required");
+   }
 
-    setLoading(true);
+   setLoading(true);
 
-    try {
-      const response = await axios.post(
-        "/Login",
-        { email, password },
-        { withCredentials: true }
-      );
-      if (response.data.error) {
-        toast.error(response.data.error);
-      } else {
-        setData({ email: "", password: "" }); // Clears the form
-        localStorage.setItem("authToken", response.data.token); // Store the auth token
-        await refreshUser(); // Refresh user data
-        toast.success("Login successful!");
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("An error occurred while logging in");
-    } finally {
-      setLoading(false);
-    }
-  };
+   // TIMEOUT THAT SHOUT FIX THE LOGIN  ERROR BUG
+   const timeoutDuration = 3000; 
+   const timeoutPromise = new Promise((_, reject) =>
+     setTimeout(() => reject(new Error("Request timed out")), timeoutDuration)
+   );
+
+   try {
+     const response = await Promise.race([
+       axios.post("/Login", { email, password }, { withCredentials: true }),
+       timeoutPromise,
+     ]);
+
+     if (response.data.error) {
+       toast.error(response.data.error);
+     } else {
+       setData({ email: "", password: "" });
+       localStorage.setItem("authToken", response.data.token);
+       await refreshUser();
+       toast.success("Login successful!");
+       navigate("/");
+     }
+   } catch (error) {
+     if (error.message === "Request timed out") {
+       toast.error("Login request timed out. Please try again.");
+     } else if (error.response?.status === 401) {
+       toast.error("Invalid email or password");
+     } else if (error.response?.status === 404) {
+       toast.error("User not found");
+     } else {
+       toast.error("An error occurred while logging in");
+     }
+   } finally {
+     setLoading(false);
+   }
+ };
 
   return (
     <div className="flex w-screen justify-center h-screen items-center relative bg-[url(https://images.pexels.com/photos/6590920/pexels-photo-6590920.jpeg?cs=srgb&dl=pexels-cottonbro-6590920.jpg&fm=jpg)] bg-cover bg-center bg-no-repeat">
